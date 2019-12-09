@@ -17,9 +17,16 @@
 
 public class Game 
 {
+	@SuppressWarnings("unused")
+	public static void main (String[] args) {
+		Game game = new Game();
+		game.play();
+	}
+	
+	
     private Parser parser;
     private Room currentRoom;
-        
+    
     /**
      * Create the game and initialise its internal map.
      */
