@@ -1,4 +1,20 @@
-Project: zuul-bad
+////////////////////////////////////
+// How to start
+////////////////////////////////////
+
+To start the program:
+- Goto the folder of the project and open cmd in the top bar or open cmd and goto the folder
+- Type: javac -target 8 *.java
+- Type: javac --release 8 *.java
+- Type: java game
+
+
+
+////////////////////////////////////
+// The default readme file
+////////////////////////////////////
+
+Project: zuul-supermega-awesome-typing-simulator
 Authors: Michael Kölling and David J. Barnes
 
 This project is part of the material for the book
