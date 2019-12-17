@@ -25,26 +25,28 @@ public class Game
 	
 	
     private Parser parser;
-    private Room currentRoom;
-    
+    private Player player;
+    Room outside, theater, pub, lab, office;
+
     /**
      * Create the game and initialise its internal map.
      */
     public Game() 
     {
-        createRooms();
+        Room startRoom = CreateRooms();
         parser = new Parser();
+        player = new Player(startRoom, 100);
     }
 
     /**
      * Create all the rooms and link their exits together.
      */
-    private void createRooms()
-    {
-        Room outside, theater, pub, lab, office;
-      
+    private Room CreateRooms()
+    {      
         // create the rooms
         outside = new Room("outside the main entrance of the university");
+        outside.Inventory().AddItem(new Item("Test", 1, "This is a Item to test the inventory"));
+        
         theater = new Room("in a lecture theater");
         pub = new Room("in the campus pub");
         lab = new Room("in a computing lab");
@@ -57,7 +59,7 @@ public class Game
         lab.setExits(outside, office, null, null);
         office.setExits(null, null, null, lab);
 
-        currentRoom = outside;  // start game outside
+        return outside;  // start game outside
     }
 
     /**
@@ -88,18 +90,18 @@ public class Game
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
         System.out.println("Type 'help' if you need help.");
         System.out.println();
-        System.out.println("You are " + currentRoom.getDescription());
+        System.out.println("You are " + player.GetCurrentRoom().getDescription());
         System.out.print("Exits: ");
-        if(currentRoom.northExit != null) {
+        if(player.GetCurrentRoom().northExit != null) {
             System.out.print("north ");
         }
-        if(currentRoom.eastExit != null) {
+        if(player.GetCurrentRoom().eastExit != null) {
             System.out.print("east ");
         }
-        if(currentRoom.southExit != null) {
+        if(player.GetCurrentRoom().southExit != null) {
             System.out.print("south ");
         }
-        if(currentRoom.westExit != null) {
+        if(player.GetCurrentRoom().westExit != null) {
             System.out.print("west ");
         }
         System.out.println();
@@ -128,6 +130,12 @@ public class Game
         }
         else if (commandWord.equals("quit")) {
             wantToQuit = quit(command);
+        }
+        else if (commandWord.equals("look")) {
+            player.GetCurrentRoom().Inventory().GetItems();
+        }
+        else if (commandWord.equals("pickup")) {
+            PickItem(command);
         }
 
         return wantToQuit;
@@ -163,42 +171,7 @@ public class Game
 
         String direction = command.getSecondWord();
 
-        // Try to leave current room.
-        Room nextRoom = null;
-        if(direction.equals("north")) {
-            nextRoom = currentRoom.northExit;
-        }
-        if(direction.equals("east")) {
-            nextRoom = currentRoom.eastExit;
-        }
-        if(direction.equals("south")) {
-            nextRoom = currentRoom.southExit;
-        }
-        if(direction.equals("west")) {
-            nextRoom = currentRoom.westExit;
-        }
-
-        if (nextRoom == null) {
-            System.out.println("There is no door!");
-        }
-        else {
-            currentRoom = nextRoom;
-            System.out.println("You are " + currentRoom.getDescription());
-            System.out.print("Exits: ");
-            if(currentRoom.northExit != null) {
-                System.out.print("north ");
-            }
-            if(currentRoom.eastExit != null) {
-                System.out.print("east ");
-            }
-            if(currentRoom.southExit != null) {
-                System.out.print("south ");
-            }
-            if(currentRoom.westExit != null) {
-                System.out.print("west ");
-            }
-            System.out.println();
-        }
+        player.GotoRoom(direction);
     }
 
     /** 
@@ -214,6 +187,18 @@ public class Game
         }
         else {
             return true;  // signal that we want to quit
+        }
+    }
+    
+    public boolean PickItem(Command command) {
+    	if(!command.hasSecondWord()) {
+            System.out.println("Pick what?");
+            return false;
+        }
+        else {
+        	System.out.println(command.getSecondWord());
+        	player.PickUpItem(command.getSecondWord());
+            return true; 
         }
     }
 }
