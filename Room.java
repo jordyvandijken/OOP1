@@ -19,6 +19,7 @@ public class Room
     public Room southExit;
     public Room eastExit;
     public Room westExit;
+    private Inventory inv;
 
     /**
      * Create a room described "description". Initially, it has
@@ -29,6 +30,7 @@ public class Room
     public Room(String description) 
     {
         this.description = description;
+        inv = new Inventory();
     }
 
     /**
@@ -62,5 +64,13 @@ public class Room
     {
         return description;
     }
+
+	public Inventory Inventory() {
+		return inv;
+	}
+
+	public void setInv(Inventory inv) {
+		this.inv = inv;
+	}
 
 }
