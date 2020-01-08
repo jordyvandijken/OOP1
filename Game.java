@@ -44,9 +44,19 @@ public class Game
     private Room CreateRooms()
     {      
         // create the rooms
+    	
+    	// testing room
         outside = new Room("outside the main entrance of the university");
-        outside.Inventory().AddItem(new Item("Test", 1, "This is a Item to test the inventory"));
+		Item test = new Item("Test", 1, "This is a Item to test the inventory");
+        outside.Inventory().AddItem(test);
         
+        Actor testActor = new Actor("Bob", "My name is Bob and I'm here to test this actor thing", "Thank you for the Test item Here is Test item 2"); 
+        testActor.SetupTrading(test, new Item("Test2", 1, "This is an item to test actor trading"));
+
+        outside.AddActor(testActor);
+        
+        
+        // Other rooms
         theater = new Room("in a lecture theater");
         pub = new Room("in the campus pub");
         lab = new Room("in a computing lab");
@@ -132,11 +142,27 @@ public class Game
             wantToQuit = quit(command);
         }
         else if (commandWord.equals("look")) {
-            player.GetCurrentRoom().Inventory().GetItems();
+            player.GetCurrentRoom().LookRoom();;
         }
         else if (commandWord.equals("pickup")) {
             PickItem(command);
         }
+        else if (commandWord.equals("drop")) {
+            DropItem(command);
+        }
+        else if (commandWord.equals("bag")) {
+            player.Inventory().LookItems();
+        }
+        else if (commandWord.equals("meeting")) {
+        	if (command.hasSecondWord()) {
+                player.GetCurrentRoom().Interact(command.getSecondWord());				
+			} else {
+				System.out.println("Who do you want to meet?");
+			}
+        } 
+        else if (commandWord.equals("trade")) {
+			Trade(command);
+		}
 
         return wantToQuit;
     }
@@ -189,7 +215,7 @@ public class Game
             return true;  // signal that we want to quit
         }
     }
-    
+
     public boolean PickItem(Command command) {
     	if(!command.hasSecondWord()) {
             System.out.println("Pick what?");
@@ -200,5 +226,42 @@ public class Game
         	player.PickUpItem(command.getSecondWord());
             return true; 
         }
+    }
+    
+    public boolean DropItem(Command command) {
+    	if(!command.hasSecondWord()) {
+            System.out.println("Drop what?");
+            return false;
+        }
+        else {
+        	System.out.println(command.getSecondWord());
+        	player.PickUpItem(command.getSecondWord());
+            return true; 
+        }
+    }
+    
+    public void Trade(Command command) {
+    	if (command.hasSecondWord()) {
+			if (command.hasThirdWord()) {
+				Item tradeItem = player.GetCurrentRoom().GetActor(command.getSecondWord()).Trade(player.Inventory().GetItem(command.getThirdWord()));
+				
+				if (tradeItem == null) {
+					return;
+				}
+				
+				System.out.println(player.GetCurrentRoom().GetActor(command.getSecondWord()).finishedLine);
+				
+				if (player.Inventory().AddItem(tradeItem)) {
+					player.Inventory().RemoveItem(player.Inventory().GetItem(command.getThirdWord()));
+				} else {
+					player.GetCurrentRoom().Inventory().AddItem(tradeItem);
+					player.Inventory().RemoveItem(player.Inventory().GetItem(command.getThirdWord()));
+				}
+			} else {
+				System.out.println("Trade what?");
+			}
+		} else {
+			System.out.println("Trade with who?");
+		}
     }
 }

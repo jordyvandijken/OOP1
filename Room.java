@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Class Room - a room in an adventure game.
  *
@@ -21,6 +24,8 @@ public class Room
     public Room westExit;
     private Inventory inv;
 
+    private HashMap<String, Actor> actors;
+    
     /**
      * Create a room described "description". Initially, it has
      * no exits. "description" is something like "a kitchen" or
@@ -31,6 +36,8 @@ public class Room
     {
         this.description = description;
         inv = new Inventory();
+        
+        actors = new HashMap<String, Actor>();
     }
 
     /**
@@ -72,5 +79,43 @@ public class Room
 	public void setInv(Inventory inv) {
 		this.inv = inv;
 	}
+	
+	public void LookRoom() {
+		Inventory().LookItems();
+		
+		LookActors();
+		
+	}
 
+	public void AddActor (Actor _actor) {
+		actors.put(_actor.name.toLowerCase(), _actor);
+	}
+	
+	public void Interact(String _name) {
+		if (actors.containsKey(_name.toLowerCase())) {
+			System.out.println(actors.get(_name.toLowerCase()).line);
+		} else {
+			System.out.println("There is no such person here!");
+		}
+	}
+	
+	public Actor GetActor(String _name) {
+		if (actors.containsKey(_name.toLowerCase())) {
+			return actors.get(_name.toLowerCase());
+		} 
+		return null;
+	}
+	
+	public void LookActors() {
+		System.out.println("Actors: ");
+		
+		if (actors.isEmpty()) {
+			System.out.println("None");
+		} else {
+			for(Map.Entry<String, Actor> entry : actors.entrySet()) {
+				 System.out.println(entry.getValue().name + " ");
+			}
+		}
+	}
+	
 }

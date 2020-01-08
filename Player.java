@@ -25,6 +25,20 @@ public class Player {
 		}
 	}
 	
+	@SuppressWarnings("unused")
+	public void DropItem (String str) {
+		Item item = this.Inventory().GetItem(str.toLowerCase());
+
+		if (item != null) {
+			currentRoom.Inventory().AddItem(this.Inventory().TakeItem(str.toLowerCase()));
+			System.out.println("You grabed: " + item.GetName());
+
+		} else {
+			// the room does not contain this item
+			System.out.println("There is no such item here!");
+		}
+	}
+	
 	public Room GetCurrentRoom() {
 		return currentRoom;
 	}
@@ -85,4 +99,5 @@ public class Player {
 	public void setInv(Inventory inv) {
 		this.inv = inv;
 	}
+
 }
