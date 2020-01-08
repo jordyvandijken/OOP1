@@ -18,7 +18,7 @@ public class Inventory {
 		maxWeigth = _Max;
 	}
 	
-	public void GetItems() {
+	public void LookItems() {
 		System.out.println("Item(s): ");
 		
 		if (inv.isEmpty()) {
@@ -30,15 +30,17 @@ public class Inventory {
 		}
 	}
 	
-	public void AddItem(Item _item) {
+	public boolean AddItem(Item _item) {
 		int weigth = totalWeight();
 				
 		weigth += _item.GetWeigth();
 		
 		if (weigth < maxWeigth) {
-			inv.put(_item.GetName().toLowerCase(), _item);	
+			inv.put(_item.GetName().toLowerCase(), _item);
+			return true;
 		} else {
 			System.out.println("Too heavy to carry!");
+			return false;
 		}
 	}
 	
