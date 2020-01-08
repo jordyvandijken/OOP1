@@ -137,6 +137,12 @@ public class Game
         else if (commandWord.equals("pickup")) {
             PickItem(command);
         }
+        else if (commandWord.equals("drop")) {
+            DropItem(command);
+        }
+        else if (commandWord.equals("bag")) {
+            player.Inventory().GetItems();
+        }
 
         return wantToQuit;
     }
@@ -189,10 +195,22 @@ public class Game
             return true;  // signal that we want to quit
         }
     }
-    
+
     public boolean PickItem(Command command) {
     	if(!command.hasSecondWord()) {
             System.out.println("Pick what?");
+            return false;
+        }
+        else {
+        	System.out.println(command.getSecondWord());
+        	player.PickUpItem(command.getSecondWord());
+            return true; 
+        }
+    }
+    
+    public boolean DropItem(Command command) {
+    	if(!command.hasSecondWord()) {
+            System.out.println("Drop what?");
             return false;
         }
         else {

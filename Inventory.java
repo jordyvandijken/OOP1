@@ -19,9 +19,14 @@ public class Inventory {
 	}
 	
 	public void GetItems() {
-		 System.out.println("Item(s): ");
-		for(Map.Entry<String, Item> entry : inv.entrySet()) {
-			 System.out.println(entry.getValue().GetName() + " ");
+		System.out.println("Item(s): ");
+		
+		if (inv.isEmpty()) {
+			System.out.println("None");
+		} else {
+			for(Map.Entry<String, Item> entry : inv.entrySet()) {
+				 System.out.println(entry.getValue().GetName() + " ");
+			}
 		}
 	}
 	
