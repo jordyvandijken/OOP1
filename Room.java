@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 /**
  * Class Room - a room in an adventure game.
  *
@@ -21,6 +23,8 @@ public class Room
     public Room westExit;
     private Inventory inv;
 
+    private HashMap<String, Actor> actors;
+    
     /**
      * Create a room described "description". Initially, it has
      * no exits. "description" is something like "a kitchen" or
@@ -31,6 +35,8 @@ public class Room
     {
         this.description = description;
         inv = new Inventory();
+        
+        actors = new HashMap<String, Actor>();
     }
 
     /**
@@ -73,4 +79,16 @@ public class Room
 		this.inv = inv;
 	}
 
+	public void AddActor (Actor _actor) {
+		actors.put(_actor.name, _actor);
+	}
+	
+	public void Interact(String _name) {
+		if (actors.containsKey(_name)) {
+			System.out.println(actors.get(_name).line);
+		} else {
+			System.out.println("There is no such person here!");
+		}
+	}
+	
 }

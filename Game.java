@@ -46,6 +46,8 @@ public class Game
         // create the rooms
         outside = new Room("outside the main entrance of the university");
         outside.Inventory().AddItem(new Item("Test", 1, "This is a Item to test the inventory"));
+        outside.AddActor(new Actor("Bob", "My name is Bob and I'm here to test this actor thing", true, "Thank you for the Test item Here is Test item 2", 
+        		new Item("Test2", 1, "This is an item to test actor trading")));
         
         theater = new Room("in a lecture theater");
         pub = new Room("in the campus pub");
@@ -142,6 +144,13 @@ public class Game
         }
         else if (commandWord.equals("bag")) {
             player.Inventory().GetItems();
+        }
+        else if (commandWord.equals("meeting")) {
+        	if (command.hasSecondWord()) {
+                player.GetCurrentRoom().Interact(command.getSecondWord());				
+			} else {
+				System.out.println("Who do you want to meet?");
+			}
         }
 
         return wantToQuit;
