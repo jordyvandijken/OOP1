@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Class Room - a room in an adventure game.
@@ -18,10 +19,8 @@ import java.util.Map;
 public class Room 
 {
     public String description;
-    public Room northExit;
-    public Room southExit;
-    public Room eastExit;
-    public Room westExit;
+    private HashMap <String, Room> exits;
+
     private Inventory inv;
 
     private HashMap<String, Actor> actors;
@@ -36,42 +35,49 @@ public class Room
     {
         this.description = description;
         inv = new Inventory();
-        
+        exits = new HashMap<String, Room>();
         actors = new HashMap<String, Actor>();
     }
 
     /**
      * Define the exits of this room.  Every direction either leads
      * to another room or is null (no exit there).
-     * @param north The north exit.
-     * @param east The east east.
-     * @param south The south exit.
-     * @param west The west exit.
+     * @param The direction
+     * @param The room in that direction
      */
-    public void setExits(Room north, Room east, Room south, Room west) 
+    public void setExit(String direction, Room neighbor)
     {
-        if(north != null) {
-            northExit = north;
-        }
-        if(east != null) {
-            eastExit = east;
-        }
-        if(south != null) {
-            southExit = south;
-        }
-        if(west != null) {
-            westExit = west;
-        }
+        exits.put(direction, neighbor);
     }
 
     /**
      * @return The description of the room.
      */
-    public String getDescription()
+    public String getShortDescription()
     {
         return description;
     }
-
+    
+    public String getLongDescription()
+    {
+        return "You are" + description + ".\n" + getExitString();
+    }
+    
+    private String getExitString()
+    {
+        String returnString = "Exits: ";
+        Set <String> keys = exits.keySet();
+        for(String exit : keys) {
+            returnString += " " + exit;
+        }
+        return returnString;
+    }
+    
+    public Room getExit(String direction)
+    {
+        return exits.get(direction);
+    }
+    
 	public Inventory Inventory() {
 		return inv;
 	}
@@ -84,7 +90,6 @@ public class Room
 		Inventory().LookItems();
 		
 		LookActors();
-		
 	}
 
 	public void AddActor (Actor _actor) {

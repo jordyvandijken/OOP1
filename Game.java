@@ -26,7 +26,7 @@ public class Game
 	
     private Parser parser;
     private Player player;
-    Room outside, theater, pub, lab, office;
+    Room lab, jungle, frontOfMansion, foyer, hallway, livingRoom, library, empty, entranceHall, office, kitchen, maze1, maze2, maze3, maze4, maze5, maze6;
 
     /**
      * Create the game and initialise its internal map.
@@ -46,30 +46,82 @@ public class Game
         // create the rooms
     	
     	// testing room
-        outside = new Room("outside the main entrance of the university");
+        lab = new Room(" insde the lab");
 		Item test = new Item("Test", 1, "This is a Item to test the inventory");
-        outside.Inventory().AddItem(test);
+		lab.Inventory().AddItem(test);
         
         Actor testActor = new Actor("Bob", "My name is Bob and I'm here to test this actor thing", "Thank you for the Test item Here is Test item 2"); 
         testActor.SetupTrading(test, new Item("Test2", 1, "This is an item to test actor trading"));
 
-        outside.AddActor(testActor);
+        lab.AddActor(testActor);
         
         
         // Other rooms
-        theater = new Room("in a lecture theater");
-        pub = new Room("in the campus pub");
-        lab = new Room("in a computing lab");
-        office = new Room("in the computing admin office");
+        jungle = new Room("in an open space in the jungle");
+        frontOfMansion = new Room("in front of a giant mansion");
+        foyer = new Room("in the foyer");
+        hallway = new Room("in a hallway");
+        livingRoom = new Room("in the living room");
+        library = new Room("in the library");
+        empty = new Room("in an empty room");
+        entranceHall = new Room("in the grand entrance hall");
+        office = new Room("in the office");
+        kitchen = new Room("in the kitchen");
         
-        // initialise room exits
-        outside.setExits(null, theater, lab, pub);
-        theater.setExits(null, null, null, outside);
-        pub.setExits(null, outside, null, null);
-        lab.setExits(outside, office, null, null);
-        office.setExits(null, null, null, lab);
+        maze1 = new Room ("you are in the first part of the maze");
+        maze2 = new Room("you are in the second part of the maze");
+        maze3 = new Room("you are in the third part of the maze");
+        maze4 = new Room("you are in the fourth part of the maze");
+        maze5 = new Room("you are in the fifth part of the maze");
+        maze6 = new Room("you are in the sixth part of the maze");
+        
+        // Initialize room exits
+        lab.setExit("north", jungle);
+        jungle.setExit("north", frontOfMansion);
+        frontOfMansion.setExit("north", foyer);
 
-        return outside;  // start game outside
+        foyer.setExit("north", entranceHall);
+        foyer.setExit("east", hallway);
+        foyer.setExit("west", kitchen);
+        
+       
+        hallway.setExit("east", livingRoom);
+        hallway.setExit("west", foyer);
+        
+        livingRoom.setExit("north", library);
+        livingRoom.setExit("west", hallway);
+        library.setExit("south", livingRoom);
+        
+        entranceHall.setExit("north", office);
+        entranceHall.setExit("south", foyer);
+        kitchen.setExit("east", foyer);
+        office.setExit("south", entranceHall);
+        
+        maze1.setExit("north", maze3);
+        maze1.setExit("east", maze4);
+        maze1.setExit("south", maze6);
+        
+        maze2.setExit("east", maze1);
+        maze2.setExit("south", maze5);
+        maze2.setExit("west", maze4);
+        
+        maze3.setExit("north", maze2);
+        maze3.setExit("east", maze5);
+        maze3.setExit("west", kitchen);
+        
+        maze4.setExit("north", maze1);
+        maze4.setExit("south", maze6);
+        maze4.setExit("west", maze2);
+        
+        maze5.setExit("north", maze4);
+        maze5.setExit("east", maze3);
+        maze5.setExit("west", maze6);
+        
+        maze6.setExit("north", maze2);
+        maze6.setExit("east", maze4);
+        maze6.setExit("south", maze1);
+
+        return lab;  // start game outside
     }
 
     /**
@@ -100,21 +152,7 @@ public class Game
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
         System.out.println("Type 'help' if you need help.");
         System.out.println();
-        System.out.println("You are " + player.GetCurrentRoom().getDescription());
-        System.out.print("Exits: ");
-        if(player.GetCurrentRoom().northExit != null) {
-            System.out.print("north ");
-        }
-        if(player.GetCurrentRoom().eastExit != null) {
-            System.out.print("east ");
-        }
-        if(player.GetCurrentRoom().southExit != null) {
-            System.out.print("south ");
-        }
-        if(player.GetCurrentRoom().westExit != null) {
-            System.out.print("west ");
-        }
-        System.out.println();
+        System.out.println(player.GetCurrentRoom().getLongDescription());
     }
 
     /**
