@@ -232,10 +232,7 @@ public class Game
             System.out.println("Go where?");
             return;
         }
-
-        String direction = command.getSecondWord();
-
-        player.GotoRoom(direction);
+        player.GotoRoom(command.getSecondWord().toLowerCase());
     }
 
     /** 
