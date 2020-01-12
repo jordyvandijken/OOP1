@@ -17,7 +17,7 @@ public class Player {
 
 		if (item != null) {
 			inv.AddItem(currentRoom.Inventory().TakeItem(str.toLowerCase()));
-			System.out.println("You grabed: " + item.GetName());
+			System.out.println("You grabbed: " + item.GetName());
 
 		} else {
 			// the room does not contain this item
@@ -31,7 +31,7 @@ public class Player {
 
 		if (item != null) {
 			currentRoom.Inventory().AddItem(this.Inventory().TakeItem(str.toLowerCase()));
-			System.out.println("You grabed: " + item.GetName());
+			System.out.println("You grabbed: " + item.GetName());
 
 		} else {
 			// the room does not contain this item

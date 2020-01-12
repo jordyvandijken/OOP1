@@ -6,16 +6,16 @@ import java.util.Map.Entry;
 public class Inventory {
 	public HashMap<String, Item> inv;
 	
-	private int maxWeigth;
+	private int maxWeight;
 	
 	public Inventory () {
 		inv = new HashMap<String, Item>();
-		maxWeigth = 100;
+		maxWeight = 100;
 	}
 	
 	public Inventory (int _Max) {
 		inv = new HashMap<String, Item>();
-		maxWeigth = _Max;
+		maxWeight = _Max;
 	}
 	
 	public void LookItems() {
@@ -31,11 +31,11 @@ public class Inventory {
 	}
 	
 	public boolean AddItem(Item _item) {
-		int weigth = totalWeight();
+		int weight = totalWeight();
 				
-		weigth += _item.GetWeigth();
+		weight += _item.GetWeight();
 		
-		if (weigth < maxWeigth) {
+		if (weight < maxWeight) {
 			inv.put(_item.GetName().toLowerCase(), _item);
 			return true;
 		} else {
@@ -53,7 +53,7 @@ public class Inventory {
 			
 			Item value = (Item) mapentry.getValue();
 			
-			tempWeight += value.GetWeigth();
+			tempWeight += value.GetWeight();
 		}
 		return tempWeight;
 	}

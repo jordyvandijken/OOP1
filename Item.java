@@ -1,12 +1,12 @@
 
 public class Item {
 	private String name;
-	private int weigth;
+	private int weight;
 	private String discription;
 	
 	public Item(String _Name, int _Weight, String _Discription) {
 		name = _Name;
-		weigth = _Weight;
+		weight = _Weight;
 		discription = _Discription;
 	}
 	
@@ -14,8 +14,8 @@ public class Item {
 		return this.name;
 	}
 	
-	public int GetWeigth() {
-		return this.weigth;
+	public int GetWeight() {
+		return this.weight;
 	}
 	
 	public String GetDiscription() {
