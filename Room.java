@@ -91,6 +91,14 @@ public class Room
 		
 		LookActors();
 	}
+	
+	public boolean ContainsRoom(Room exit) {
+		if (exits.containsValue(exit)) {
+			return true;
+		}
+		
+		return false;
+	}
 
 	public void AddActor (Actor _actor) {
 		actors.put(_actor.name.toLowerCase(), _actor);

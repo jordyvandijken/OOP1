@@ -201,6 +201,9 @@ public class Game
         else if (commandWord.equals("trade")) {
 			Trade(command);
 		}
+        else if (commandWord.equals("back")) {
+			Back(command);
+		}
 
         return wantToQuit;
     }
@@ -232,10 +235,16 @@ public class Game
             System.out.println("Go where?");
             return;
         }
+        player.GotoRoom(command.getSecondWord().toLowerCase());
+    }
 
-        String direction = command.getSecondWord();
-
-        player.GotoRoom(direction);
+    /** 
+     * Try to go in one direction. If there is an exit, enter
+     * the new room, otherwise print an error message.
+     */
+    private void Back(Command command) 
+    {
+        player.GotoLastRoom();
     }
 
     /** 

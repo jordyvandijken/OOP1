@@ -1,14 +1,20 @@
+import java.util.ArrayList;
+import java.util.List;
 
 public class Player {
 	private Room currentRoom;
 	private int health;
 	private Inventory inv;
 	
+	List<Room> lastRoom;
+	
 	public Player(Room startRoom, int startHealth) {
 		currentRoom = startRoom;
 		setHealth(startHealth);
 		
 		inv = new Inventory(20);
+		
+		lastRoom = new ArrayList<Room>();
 	}
 	
 	@SuppressWarnings("unused")
@@ -47,11 +53,12 @@ public class Player {
 	    // Try to leave current room.
         Room nextRoom = currentRoom.getExit(direction);
         
-
+        
         if (nextRoom == null) {
             System.out.println("There is no door!");
         }
         else {
+            SetLastRoom(currentRoom);
             currentRoom = nextRoom;
             System.out.println(currentRoom.getLongDescription());
         }
@@ -60,6 +67,27 @@ public class Player {
 
 	public int getHealth() {
 		return health;
+	}
+	
+	private void SetLastRoom(Room newRoom) {
+		if (currentRoom.ContainsRoom(newRoom)) {
+			if (lastRoom.get(lastRoom.size() - 2) != newRoom) {
+				lastRoom.add(newRoom);
+			}
+		} else {
+			//lastRoom = new ArrayList<Room>();
+			lastRoom.add(newRoom);
+		}
+	}
+	
+	public void GotoLastRoom() {
+		if (lastRoom.size() - 1 > 0) {
+			currentRoom = lastRoom.get(lastRoom.size() - 1);
+			lastRoom.remove(lastRoom.size() - 1);
+            System.out.println(currentRoom.getLongDescription());
+		} else {
+            System.out.println("Can't Go back any further");
+		}
 	}
 
 
