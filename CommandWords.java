@@ -29,6 +29,14 @@ public class CommandWords
      * @return true if a given string is a valid command,
      * false if it isn't.
      */
+    
+    public void showAll()
+    {
+    	for (String command : validCommands) {
+    		Sysem.out.print(command + " ");
+    	}
+    	System.out.println();
+    }
     public boolean isCommand(String aString)
     {
         for(int i = 0; i < validCommands.length; i++) {
