@@ -23,11 +23,11 @@ public class Player {
 
 		if (item != null) {
 			inv.AddItem(currentRoom.Inventory().TakeItem(str.toLowerCase()));
-			System.out.println("You grabbed: " + item.GetName());
+			Utils.DisplayText("You grabbed: " + item.GetName(), 0.05f);
 
 		} else {
 			// the room does not contain this item
-			System.out.println("There is no such item here!");
+			Utils.DisplayText("There is no such item here!", 0.05f);
 		}
 	}
 	
@@ -37,11 +37,11 @@ public class Player {
 
 		if (item != null) {
 			currentRoom.Inventory().AddItem(this.Inventory().TakeItem(str.toLowerCase()));
-			System.out.println("You grabbed: " + item.GetName());
+			Utils.DisplayText("You grabbed: " + item.GetName(), 0.05f);
 
 		} else {
 			// the room does not contain this item
-			System.out.println("There is no such item here!");
+			Utils.DisplayText("There is no such item here!", 0.05f);
 		}
 	}
 	
@@ -55,12 +55,12 @@ public class Player {
         
         
         if (nextRoom == null) {
-            System.out.println("There is no door!");
+            Utils.DisplayText("There is no door!", 0.05f);
         }
         else {
             SetLastRoom(currentRoom);
             currentRoom = nextRoom;
-            System.out.println(currentRoom.getLongDescription());
+            Utils.DisplayText(currentRoom.getLongDescription(), 0.05f);
         }
 	}
 
@@ -84,9 +84,9 @@ public class Player {
 		if (lastRoom.size() - 1 > 0) {
 			currentRoom = lastRoom.get(lastRoom.size() - 1);
 			lastRoom.remove(lastRoom.size() - 1);
-            System.out.println(currentRoom.getLongDescription());
+            Utils.DisplayText(currentRoom.getLongDescription(), 0.05f);
 		} else {
-            System.out.println("Can't Go back any further");
+            Utils.DisplayText("Can't Go back any further", 0.05f);
 		}
 	}
 
