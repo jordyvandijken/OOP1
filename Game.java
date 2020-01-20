@@ -139,7 +139,7 @@ public class Game
             Command command = parser.getCommand();
             finished = processCommand(command);
         }
-        System.out.println("Thank you for playing.  Good bye.");
+        Utils.DisplayText("Thank you for playing.  Good bye.", 0.05f);
     }
 
     /**
@@ -147,12 +147,12 @@ public class Game
      */
     private void printWelcome()
     {
-        System.out.println();
-        System.out.println("Welcome to the World of Zuul!");
-        System.out.println("World of Zuul is a new, incredibly boring adventure game.");
-        System.out.println("Type 'help' if you need help.");
-        System.out.println();
-        System.out.println(player.GetCurrentRoom().getLongDescription());
+        Utils.DisplayText("", 0);
+        Utils.DisplayText("Welcome to the World of Zuul!", 0.05f);
+        Utils.DisplayText("World of Zuul is a new, incredibly boring adventure game.", 0.05f);
+        Utils.DisplayText("Type 'help' if you need help.", 0.05f);
+        Utils.DisplayText("", 0);
+        Utils.DisplayText(player.GetCurrentRoom().getLongDescription(), 0.05f);
     }
 
     /**
@@ -165,7 +165,7 @@ public class Game
         boolean wantToQuit = false;
 
         if(command.isUnknown()) {
-            System.out.println("I don't know what you mean...");
+            Utils.DisplayText("I don't know what you mean...", 0.05f);
             return false;
         }
 
@@ -195,7 +195,7 @@ public class Game
         	if (command.hasSecondWord()) {
                 player.GetCurrentRoom().Interact(command.getSecondWord());				
 			} else {
-				System.out.println("Who do you want to meet?");
+	            Utils.DisplayText("Who do you want to meet?", 0.05f);
 			}
         } 
         else if (commandWord.equals("trade")) {
