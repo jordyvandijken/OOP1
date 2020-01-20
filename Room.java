@@ -106,9 +106,9 @@ public class Room
 	
 	public void Interact(String _name) {
 		if (actors.containsKey(_name.toLowerCase())) {
-			System.out.println(actors.get(_name.toLowerCase()).line);
+			Utils.DisplayText(actors.get(_name.toLowerCase()).line, 0.05f);
 		} else {
-			System.out.println("There is no such person here!");
+			Utils.DisplayText("There is no such person here!", 0.05f);
 		}
 	}
 	
@@ -120,13 +120,14 @@ public class Room
 	}
 	
 	public void LookActors() {
-		System.out.println("Actors: ");
+		Utils.DisplayText("Actors: ", 0.05f);
 		
 		if (actors.isEmpty()) {
-			System.out.println("None");
+			Utils.DisplayText("None", 0.05f);
+		
 		} else {
 			for(Map.Entry<String, Actor> entry : actors.entrySet()) {
-				 System.out.println(entry.getValue().name + " ");
+				 Utils.DisplayText(entry.getValue().name + " ", 0.05f);
 			}
 		}
 	}

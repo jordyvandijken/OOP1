@@ -217,10 +217,11 @@ public class Game
      */
     private void printHelp() 
     {
-        System.out.println("You are lost. You are alone. You wander");
-        System.out.println("around at the university.");
-        System.out.println();
-        System.out.println("Your command words are:");
+        Utils.DisplayText("You are lost. You are alone. You wander", 0.05f);
+        Utils.DisplayText("around at the university.", 0.05f);
+        Utils.DisplayText("", 0.05f);
+        Utils.DisplayText("Your command words are:", 0.05f);
+
         parser.showCommands();
     }
 
@@ -232,7 +233,8 @@ public class Game
     {
         if(!command.hasSecondWord()) {
             // if there is no second word, we don't know where to go...
-            System.out.println("Go where?");
+            Utils.DisplayText("Go where?", 0.05f);
+
             return;
         }
         player.GotoRoom(command.getSecondWord().toLowerCase());
@@ -255,7 +257,8 @@ public class Game
     private boolean quit(Command command) 
     {
         if(command.hasSecondWord()) {
-            System.out.println("Quit what?");
+            Utils.DisplayText("Quit what?", 0.05f);
+
             return false;
         }
         else {
@@ -265,11 +268,11 @@ public class Game
 
     public boolean PickItem(Command command) {
     	if(!command.hasSecondWord()) {
-            System.out.println("Pick what?");
+            Utils.DisplayText("Pick what?", 0.05f);
+
             return false;
         }
         else {
-        	System.out.println(command.getSecondWord());
         	player.PickUpItem(command.getSecondWord());
             return true; 
         }
@@ -277,11 +280,12 @@ public class Game
     
     public boolean DropItem(Command command) {
     	if(!command.hasSecondWord()) {
-            System.out.println("Drop what?");
+            Utils.DisplayText("Drop what?", 0.05f);
+
             return false;
         }
         else {
-        	System.out.println(command.getSecondWord());
+        	
         	player.PickUpItem(command.getSecondWord());
             return true; 
         }
@@ -296,7 +300,7 @@ public class Game
 					return;
 				}
 				
-				System.out.println(player.GetCurrentRoom().GetActor(command.getSecondWord()).finishedLine);
+				Utils.DisplayText(player.GetCurrentRoom().GetActor(command.getSecondWord()).finishedLine, 0.05f);
 				
 				if (player.Inventory().AddItem(tradeItem)) {
 					player.Inventory().RemoveItem(player.Inventory().GetItem(command.getThirdWord()));
@@ -305,10 +309,10 @@ public class Game
 					player.Inventory().RemoveItem(player.Inventory().GetItem(command.getThirdWord()));
 				}
 			} else {
-				System.out.println("Trade what?");
+				Utils.DisplayText("Trade what?", 0.05f);
 			}
 		} else {
-			System.out.println("Trade with who?");
+			Utils.DisplayText("Trade with who?", 0.05f);
 		}
     }
 }

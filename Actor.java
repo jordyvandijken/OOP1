@@ -23,8 +23,8 @@ public class Actor {
 			return tradeitem;
 		}
 		
-		System.out.println("Are you trying to fool me!");
-		
+		Utils.DisplayText("Are you trying to fool me!", 0.05f);
+
 		return null;
 	}
 	

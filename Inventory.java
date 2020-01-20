@@ -19,13 +19,13 @@ public class Inventory {
 	}
 	
 	public void LookItems() {
-		System.out.println("Item(s): ");
+		Utils.DisplayText("Item(s): ", 0.05f);
 		
 		if (inv.isEmpty()) {
-			System.out.println("None");
+			Utils.DisplayText("None", 0.05f);
 		} else {
 			for(Map.Entry<String, Item> entry : inv.entrySet()) {
-				 System.out.println(entry.getValue().GetName() + " ");
+				 Utils.DisplayText(entry.getValue().GetName() + " ", 0.05f);
 			}
 		}
 	}
@@ -39,7 +39,7 @@ public class Inventory {
 			inv.put(_item.GetName().toLowerCase(), _item);
 			return true;
 		} else {
-			System.out.println("Too heavy to carry!");
+			Utils.DisplayText("Too heavy to carry!", 0.05f);
 			return false;
 		}
 	}
