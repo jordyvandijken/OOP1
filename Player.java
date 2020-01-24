@@ -53,6 +53,25 @@ public class Player {
 	    // Try to leave current room.
         Room nextRoom = currentRoom.getExit(direction);
         
+        Room nextLockedExit = currentRoom.getLockedExit(direction);
+        
+        if (nextLockedExit != null)
+        {
+        	if(currentRoom.getLocked(direction) == true))
+        	{
+        		Utils.DisplayText("This door is locked and can't be unlocked", 0.05f);
+        		return;
+        	}
+        	else
+        	{
+        		SetLastRoom(currentRoom);
+        		currentRoom = nextLockedExit;
+        		Utils.DisplayText(currentRoom.getLongDescription(), 0.05f);
+        		
+        		
+        	}
+        }
+        
         
         if (nextRoom == null) {
             Utils.DisplayText("There is no door!", 0.05f);

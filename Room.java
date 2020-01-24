@@ -19,7 +19,8 @@ import java.util.Set;
 public class Room 
 {
     public String description;
-    private HashMap <String, Room> exits;
+    private HashMap <String, Exit> exits;
+    private HashMap <String, LockedExit> lockedExits;
 
     private Inventory inv;
 
@@ -35,8 +36,9 @@ public class Room
     {
         this.description = description;
         inv = new Inventory();
-        exits = new HashMap<String, Room>();
+        exits = new HashMap<String, Exit>();
         actors = new HashMap<String, Actor>();
+        lockedExits = new HashMap<String, LockedExit>();
     }
 
     /**
@@ -47,9 +49,18 @@ public class Room
      */
     public void setExit(String direction, Room neighbor)
     {
-        exits.put(direction, neighbor);
+    	Exit temp = new Exit(direction, neighbor);
+        exits.put(direction, temp);
     }
-
+    
+    public void setLockedExit(String direction, Room neighbor, boolean locked, Item requiredKey)
+    {
+    	LockedExit temp = new LockedExit(direction, neighbor, locked, requiredKey);
+    	lockedExits.put(direction, temp);
+        
+    }
+    
+       
     /**
      * @return The description of the room.
      */
@@ -60,7 +71,7 @@ public class Room
     
     public String getLongDescription()
     {
-        return "You are" + description + ".\n" + getExitString();
+        return "You are " + description + ".\n" + getExitString() + ".\n" + getLockedExitString();
     }
     
     private String getExitString()
@@ -70,12 +81,48 @@ public class Room
         for(String exit : keys) {
             returnString += " " + exit;
         }
+        
+        
         return returnString;
+        	
     }
+    
+    private String getLockedExitString()
+    {
+    	String returnString = "Locked exits:";
+    	Set<String> keys = lockedExits.keySet();
+    	for(String lockedExit : keys)
+    	{
+    		returnString += " " + lockedExit;
+    	}   	return returnString;
+    }
+    
+ 
     
     public Room getExit(String direction)
     {
-        return exits.get(direction);
+    	Exit tempExit = exits.get(direction);
+    	if (tempExit != null)
+    	{
+    		return tempExit.getNeighbor();
+    	}
+    	return null;
+    }
+    
+    public Room getLockedExit(String direction)
+    {
+    	LockedExit templocked = lockedExits.get(direction);
+    	if(templocked != null)
+    	{
+    		return templocked.getNeighbor();
+    		
+    	}
+    	return null;
+    }
+    
+    public LockedExit getActualExit(String direction)
+    {
+    	return lockedExits.get(direction);
     }
     
 	public Inventory Inventory() {
@@ -88,7 +135,7 @@ public class Room
 	
 	public void LookRoom() {
 		Inventory().LookItems();
-		
+				
 		LookActors();
 	}
 	
@@ -130,6 +177,11 @@ public class Room
 				 Utils.DisplayText(entry.getValue().name + " ", 0.05f);
 			}
 		}
+	}
+	
+	public boolean getLocked(String direction)
+	{
+		return lockedExits.get(direction).getLocked();
 	}
 	
 }
