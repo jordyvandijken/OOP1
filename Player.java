@@ -57,10 +57,13 @@ public class Player {
         
         if (nextLockedExit != null)
         {
-        	if(currentRoom.getLocked(direction) == true))
+        	if(currentRoom.getLocked(direction) == true)
         	{
-        		Utils.DisplayText("This door is locked and can't be unlocked", 0.05f);
-        		return;
+        		Utils.DisplayText("This door is locked", 0.05f);
+        		if(currentRoom.getActualExit(direction).getRequiredKey()== null) {
+        			Utils.DisplayText(" and can't be unlocked", 0.05f);
+        		}
+        		
         	}
         	else
         	{
@@ -73,7 +76,7 @@ public class Player {
         }
         
         
-        if (nextRoom == null) {
+        else if (nextRoom == null) {
             Utils.DisplayText("There is no door!", 0.05f);
         }
         else {

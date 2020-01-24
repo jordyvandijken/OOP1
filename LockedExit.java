@@ -3,7 +3,7 @@
 public class LockedExit extends Exit
 {
 	private boolean locked;
-	private Item requiredKey;
+	private Item requiredKey; // if null,  door lock can't be changed 
 	
 	public LockedExit(String direction, Room neighbor, boolean locked, Item requiredKey)
 	{

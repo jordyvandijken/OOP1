@@ -71,7 +71,7 @@ public class Room
     
     public String getLongDescription()
     {
-        return "You are " + description + ".\n" + getExitString() + ".\n" + getLockedExitString();
+        return "You are " + description + ".\n" + getExitString() + getLockedExitString();
     }
     
     private String getExitString()
@@ -89,12 +89,20 @@ public class Room
     
     private String getLockedExitString()
     {
-    	String returnString = "Locked exits:";
-    	Set<String> keys = lockedExits.keySet();
-    	for(String lockedExit : keys)
-    	{
-    		returnString += " " + lockedExit;
-    	}   	return returnString;
+    	if(!lockedExits.isEmpty())
+    			{
+    		String returnString = "\nLocked exits:";
+        	Set<String> keys = lockedExits.keySet();
+        	for(String lockedExit : keys)
+        	{
+        		returnString += " " + lockedExit;
+        	}   	return returnString;
+    		
+    			}
+    	else {
+    		return "";
+    	}
+    	
     }
     
  

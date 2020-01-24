@@ -68,14 +68,14 @@ public class Game
         office = new Room("in the office");
         kitchen = new Room("in the kitchen");
         
-        mazeEntrance = new Room("at the start of the magic maze! Good luck, and do not forget to look around.");
+        mazeEntrance = new Room("at the start of the magic maze");
         maze1 = new Room ("in the first part of the maze");
         maze2 = new Room("in the second part of the maze");
         maze3 = new Room("in the third part of the maze");
         maze4 = new Room("in the fourth part of the maze");
         maze5 = new Room("in the fifth part of the maze");
         maze6 = new Room("in the sixth part of the maze");
-        mazeEnd = new Room("at the end of the magic maze, well done!");
+        mazeEnd = new Room("at the end of the magic maze");
         
         // Add Items to the game
         
@@ -94,7 +94,6 @@ public class Game
         
         // Initialize room exits
         lab.setExit("up", jungle);
-        lab.setLockedExit("north", empty, true, testKey);
         jungle.setExit("north", frontOfMansion);
         jungle.setExit("south", lab);
         frontOfMansion.setExit("north", foyer);
@@ -120,6 +119,7 @@ public class Game
         office.setExit("south", entranceHall);
         
         mazeEntrance.setExit("west", maze2);
+        mazeEntrance.setLockedExit("up", livingRoom, true, null);
         
         maze1.setExit("north", maze3);
         maze1.setExit("east", maze4);
@@ -362,17 +362,24 @@ public class Game
     	String wantedExit = command.getSecondWord();
     	Item requiredKey = player.GetCurrentRoom().getActualExit(wantedExit).getRequiredKey();
     	
-    	if (player.Inventory().Contains(requiredKey))
+    	if(requiredKey == null)
     	{
-    		player.GetCurrentRoom().getActualExit(wantedExit).unlock();
-    		Utils.DisplayText("Door unlocked", 0.05f);
+    		Utils.DisplayText("This door can't be unlocked", 0.05f);
     	}
-    	
     	else {
-    		Utils.DisplayText("You don't have the right key", 0.05f);
+    	
+	    	if (player.Inventory().Contains(requiredKey))
+	    	{
+	    		player.GetCurrentRoom().getActualExit(wantedExit).unlock();
+	    		Utils.DisplayText("Door unlocked", 0.05f);
+	    	}
+	    	
+	    	
+	    	else {
+	    		Utils.DisplayText("You don't have the right key", 0.05f);
+	    	}
     	}
     	
-    	//if player.Invenvory
     }
     
    
