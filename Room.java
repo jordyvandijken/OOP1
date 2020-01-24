@@ -42,27 +42,34 @@ public class Room
     /**
      * Define the exits of this room.  Every direction either leads
      * to another room or is null (no exit there).
-     * @param The direction
-     * @param The room in that direction
+     * @param direction The direction
+     * @param neighbour The room in that direction
      */
-    public void setExit(String direction, Room neighbor)
+    public void setExit(String direction, Room neighbour)
     {
-        exits.put(direction, neighbor);
+        exits.put(direction, neighbour);
     }
 
     /**
-     * @return The description of the room.
+     * @return The short description of the room.
      */
     public String getShortDescription()
     {
         return description;
     }
     
+    /**
+     * @return The long description of the room.
+     */
     public String getLongDescription()
     {
         return "You are" + description + ".\n" + getExitString();
     }
     
+    /**
+     * Shows all the existing exits
+     * @return A list of all the exits in a string
+     */
     private String getExitString()
     {
         String returnString = "Exits: ";
@@ -73,25 +80,45 @@ public class Room
         return returnString;
     }
     
+    /**
+     * Get an exit of the room
+     * @param direction The direction
+     * @return return the room if exists else null
+     */
     public Room getExit(String direction)
     {
         return exits.get(direction);
     }
     
+    /**
+     * @return Gives the inventory of the room
+     */
 	public Inventory Inventory() {
 		return inv;
 	}
 
+    /**
+     * Set the inventory of the room
+     * @param inv The Inventory to set
+     */
 	public void setInv(Inventory inv) {
 		this.inv = inv;
 	}
 	
+    /**
+     * Prints the items and actors in the room
+     */
 	public void LookRoom() {
 		Inventory().LookItems();
 		
 		LookActors();
 	}
 	
+    /**
+     * look if the room contain the exit
+     * @param exit the room to check if it exists
+     * @return true if the room exists
+     */
 	public boolean ContainsRoom(Room exit) {
 		if (exits.containsValue(exit)) {
 			return true;
@@ -100,10 +127,18 @@ public class Room
 		return false;
 	}
 
+    /**
+     * Add an actor to the room
+     * @param _actor Adds actor to the room
+     */
 	public void AddActor (Actor _actor) {
 		actors.put(_actor.name.toLowerCase(), _actor);
 	}
 	
+    /**
+     * Interact with the actor
+     * @param _name the actor to interact with
+     */
 	public void Interact(String _name) {
 		if (actors.containsKey(_name.toLowerCase())) {
 			Utils.DisplayText(actors.get(_name.toLowerCase()).line, 0.05f);
@@ -112,6 +147,11 @@ public class Room
 		}
 	}
 	
+    /**
+     * Get the actor with the given string
+     * @param _name the name of the actor
+     * @return the actor of it exists
+     */
 	public Actor GetActor(String _name) {
 		if (actors.containsKey(_name.toLowerCase())) {
 			return actors.get(_name.toLowerCase());
@@ -119,6 +159,9 @@ public class Room
 		return null;
 	}
 	
+    /**
+     * Print the actor of the room
+     */
 	public void LookActors() {
 		Utils.DisplayText("Actors: ", 0.05f);
 		

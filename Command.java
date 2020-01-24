@@ -9,9 +9,9 @@
  * 
  * The way this is used is: Commands are already checked for being valid
  * command words. If the user entered an invalid command (a word that is not
- * known) then the command word is <null>.
+ * known) then the command word is null.
  *
- * If the command had only one word, then the second word is <null>.
+ * If the command had only one word, then the second word is null.
  * 
  * @author  Michael Kölling and David J. Barnes
  * @version 2016.02.29
@@ -27,14 +27,15 @@ public class Command
      * Create a command object. First and second word must be supplied, but
      * either one (or both) can be null.
      * @param firstWord The first word of the command. Null if the command
-     *                  was not recognised.
      * @param secondWord The second word of the command.
+     * @param thirdWord The third word of the command.
      */
-    public Command(String firstWord, String secondWord, String _thirdWord)
+    
+    public Command(String firstWord, String secondWord, String thirdWord)
     {
         commandWord = firstWord;
         this.secondWord = secondWord;
-        this.thirdWord = _thirdWord;
+        this.thirdWord = thirdWord;
     }
 
     /**
@@ -56,6 +57,10 @@ public class Command
         return secondWord;
     }
     
+    /**
+     * @return The Third word of this command. Returns null if there was no
+     * Third word.
+     */
     public String getThirdWord()
     {
         return thirdWord;
@@ -77,6 +82,9 @@ public class Command
         return (secondWord != null);
     }
     
+    /**
+     * @return true if the command has a Third word.
+     */
     public boolean hasThirdWord()
     {
         return (thirdWord != null);

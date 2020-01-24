@@ -70,6 +70,10 @@ public class Parser
         }
     }
     
+	/**
+     * Shows the current available commands
+     * @return void.
+     */
     public void showCommands()
     {
     	commands.showAll();
