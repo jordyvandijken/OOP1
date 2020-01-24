@@ -69,4 +69,17 @@ public class Inventory {
 	public Item TakeItem(String str) {
 		return inv.remove(str);
 	}
+	
+	public boolean Contains(Item item) {
+		boolean temp = false;
+		for(Map.Entry<String, Item> entry : inv.entrySet()) {
+			if(entry.getValue().GetName() == item.GetName()) {
+				temp = true;
+			}
+		}
+		
+		return temp;
+	
+	}
+	
 }

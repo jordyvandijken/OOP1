@@ -26,7 +26,7 @@ public class Game
 	
     private Parser parser;
     private Player player;
-    Room lab, jungle, frontOfMansion, foyer, hallway, livingRoom, library, empty, entranceHall, office, kitchen, maze1, maze2, maze3, maze4, maze5, maze6;
+    Room lab, jungle, frontOfMansion, foyer, hallway, livingRoom, library, empty, entranceHall, office, kitchen, mazeEntrance, maze1, maze2, maze3, maze4, maze5, maze6, mazeEnd;
 
     /**
      * Create the game and initialize its internal map.
@@ -46,10 +46,14 @@ public class Game
         // create the rooms
     	
     	// testing room
-        lab = new Room(" insde the lab");
+        lab = new Room("insde the lab");
 		Item test = new Item("Test", 1, "This is a Item to test the inventory");
 		lab.Inventory().AddItem(test);
-        
+		Item testkey = new Item("testkey", 5, "key to test doors");
+		lab.Inventory().AddItem(testkey);
+		
+		empty = new Room("in an empty room");
+		       
         Actor testActor = new Actor("Bob", "My name is Bob and I'm here to test this actor thing", "Thank you for the Test item Here is Test item 2"); 
         testActor.SetupTrading(test, new Item("Test2", 1, "This is an item to test actor trading"));
 
@@ -68,20 +72,43 @@ public class Game
         office = new Room("in the office");
         kitchen = new Room("in the kitchen");
         
-        maze1 = new Room ("you are in the first part of the maze");
-        maze2 = new Room("you are in the second part of the maze");
-        maze3 = new Room("you are in the third part of the maze");
-        maze4 = new Room("you are in the fourth part of the maze");
-        maze5 = new Room("you are in the fifth part of the maze");
-        maze6 = new Room("you are in the sixth part of the maze");
+        mazeEntrance = new Room("at the start of the magic maze");
+        maze1 = new Room ("in the first part of the maze");
+        maze2 = new Room("in the second part of the maze");
+        maze3 = new Room("in the third part of the maze");
+        maze4 = new Room("in the fourth part of the maze");
+        maze5 = new Room("in the fifth part of the maze");
+        maze6 = new Room("in the sixth part of the maze");
+        mazeEnd = new Room("at the end of the magic maze");
+        
+        // Add Items to the game
+        
+        Item coins = new Item("coins", 5, "Some coins");
+        Item mansionKey = new Item("MansionKey", 2, "Key to open the front door of the mansion");
+        Item testKey = new Item("testkey", 2, "key to test");
+        livingRoom.Inventory().AddItem(coins);
+        foyer.Inventory().AddItem(mansionKey);
+        lab.Inventory().AddItem(testKey);
+        
+        // Add Actors to the game
+        
+        Actor steve = new Actor("Steve", "Hi, I'm Steve, your coworker. You have been assigned to fly out to a newly discovered mansion and to take a look around. \n"
+        		+ "There is a chopper on the roof that will take you close to where you need to be.", " "); 
+        lab.AddActor(steve);
         
         // Initialize room exits
         lab.setExit("north", jungle);
+        lab.setLockedExit("south", empty, true, testkey);
+        empty.setExit("north", lab);
+        
         jungle.setExit("north", frontOfMansion);
+        jungle.setExit("south", lab);
         frontOfMansion.setExit("north", foyer);
+        frontOfMansion.setExit("south", jungle);
 
         foyer.setExit("north", entranceHall);
         foyer.setExit("east", hallway);
+        foyer.setLockedExit("south", frontOfMansion, true, mansionKey);
         foyer.setExit("west", kitchen);
         
        
@@ -90,12 +117,16 @@ public class Game
         
         livingRoom.setExit("north", library);
         livingRoom.setExit("west", hallway);
+        livingRoom.setExit("south", mazeEntrance);
         library.setExit("south", livingRoom);
         
         entranceHall.setExit("north", office);
         entranceHall.setExit("south", foyer);
         kitchen.setExit("east", foyer);
         office.setExit("south", entranceHall);
+        
+        mazeEntrance.setExit("west", maze2);
+        mazeEntrance.setLockedExit("up", livingRoom, true, null);
         
         maze1.setExit("north", maze3);
         maze1.setExit("east", maze4);
@@ -107,7 +138,7 @@ public class Game
         
         maze3.setExit("north", maze2);
         maze3.setExit("east", maze5);
-        maze3.setExit("west", kitchen);
+        maze3.setExit("west", mazeEnd);
         
         maze4.setExit("north", maze1);
         maze4.setExit("south", maze6);
@@ -120,6 +151,9 @@ public class Game
         maze6.setExit("north", maze2);
         maze6.setExit("east", maze4);
         maze6.setExit("south", maze1);
+        
+        mazeEnd.setExit("up", kitchen);
+         
 
         return lab;  // start game outside
     }
@@ -204,6 +238,9 @@ public class Game
         else if (commandWord.equals("back")) {
 			Back(command);
 		}
+        else if (commandWord.equals("unlock")) {
+        	unlockExit(command);
+        }
 
         return wantToQuit;
     }
@@ -217,8 +254,8 @@ public class Game
      */
     private void printHelp() 
     {
-        Utils.DisplayText("You are lost. You are alone. You wander", 0.05f);
-        Utils.DisplayText("around at the university.", 0.05f);
+        Utils.DisplayText("Go to the mansion. Search for the lost items", 0.05f);
+        Utils.DisplayText("and most importantly: be careful.", 0.05f);
         Utils.DisplayText("", 0.05f);
         Utils.DisplayText("Your command words are:", 0.05f);
 
@@ -237,6 +274,7 @@ public class Game
 
             return;
         }
+               
         player.GotoRoom(command.getSecondWord().toLowerCase());
     }
 
@@ -315,4 +353,40 @@ public class Game
 			Utils.DisplayText("Trade with who?", 0.05f);
 		}
     }
+    /*
+     * Try to unlock door. If it fails, it shows why.
+     */
+    private void unlockExit(Command command)
+    {
+    	if(!command.hasSecondWord())
+    	{
+    		Utils.DisplayText("Unlock what?", 0.05f);
+    		return;
+    	}
+    	    	
+    	String wantedExit = command.getSecondWord();
+    	Item requiredKey = player.GetCurrentRoom().getActualExit(wantedExit).getRequiredKey();
+    	
+    	if(requiredKey == null)
+    	{
+    		Utils.DisplayText("This door can't be unlocked", 0.05f);
+    	}
+    	else {
+    	
+	    	if (player.Inventory().Contains(requiredKey))
+	    	{
+	    		player.GetCurrentRoom().getActualExit(wantedExit).unlock();
+	    		Utils.DisplayText("Door unlocked", 0.05f);
+	    		
+	    	}
+	    	
+	    	
+	    	else {
+	    		Utils.DisplayText("You don't have the right key. you need the " + requiredKey.GetName(), 0.05f);
+	    	}
+    	}
+    	
+    }
+    
+   
 }

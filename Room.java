@@ -19,7 +19,8 @@ import java.util.Set;
 public class Room 
 {
     public String description;
-    private HashMap <String, Room> exits;
+    private HashMap <String, Exit> exits;
+    private HashMap <String, LockedExit> lockedExits;
 
     private Inventory inv;
 
@@ -35,8 +36,9 @@ public class Room
     {
         this.description = description;
         inv = new Inventory();
-        exits = new HashMap<String, Room>();
+        exits = new HashMap<String, Exit>();
         actors = new HashMap<String, Actor>();
+        lockedExits = new HashMap<String, LockedExit>();
     }
 
     /**
@@ -45,13 +47,22 @@ public class Room
      * @param direction The direction
      * @param neighbour The room in that direction
      */
-    public void setExit(String direction, Room neighbour)
+    public void setExit(String direction, Room neighbor)
     {
-        exits.put(direction, neighbour);
+    	Exit temp = new Exit(direction, neighbor);
+        exits.put(direction, temp);
     }
-
+    
+    public void setLockedExit(String direction, Room neighbor, boolean locked, Item requiredKey)
+    {
+    	LockedExit temp = new LockedExit(direction, neighbor, locked, requiredKey);
+    	lockedExits.put(direction, temp);
+        
+    }
+    
+       
     /**
-     * @return The short description of the room.
+     * @return The description of the room.
      */
     public String getShortDescription()
     {
@@ -63,7 +74,7 @@ public class Room
      */
     public String getLongDescription()
     {
-        return "You are" + description + ".\n" + getExitString();
+        return "You are " + description + ".\n" + getExitString() + getLockedExitString();
     }
     
     /**
@@ -77,7 +88,10 @@ public class Room
         for(String exit : keys) {
             returnString += " " + exit;
         }
+        
+        
         return returnString;
+        	
     }
     
     /**
@@ -85,40 +99,67 @@ public class Room
      * @param direction The direction
      * @return return the room if exists else null
      */
-    public Room getExit(String direction)
+    
+    private String getLockedExitString()
     {
-        return exits.get(direction);
+    	if(!lockedExits.isEmpty())
+    			{
+    		String returnString = "\nLocked exits:";
+        	Set<String> keys = lockedExits.keySet();
+        	for(String lockedExit : keys)
+        	{
+        		returnString += " " + lockedExit;
+        	}   	return returnString;
+    		
+    			}
+    	else {
+    		return "";
+    	}
+    	
     }
     
-    /**
-     * @return Gives the inventory of the room
-     */
+ 
+    
+    public Room getExit(String direction)
+    {
+    	Exit tempExit = exits.get(direction);
+    	if (tempExit != null)
+    	{
+    		return tempExit.getNeighbor();
+    	}
+    	return null;
+    }
+    
+    public Room getLockedExit(String direction)
+    {
+    	LockedExit templocked = lockedExits.get(direction);
+    	if(templocked != null)
+    	{
+    		return templocked.getNeighbor();
+    		
+    	}
+    	return null;
+    }
+    
+    public LockedExit getActualExit(String direction)
+    {
+    	return lockedExits.get(direction);
+    }
+    
 	public Inventory Inventory() {
 		return inv;
 	}
 
-    /**
-     * Set the inventory of the room
-     * @param inv The Inventory to set
-     */
 	public void setInv(Inventory inv) {
 		this.inv = inv;
 	}
 	
-    /**
-     * Prints the items and actors in the room
-     */
 	public void LookRoom() {
 		Inventory().LookItems();
-		
+				
 		LookActors();
 	}
 	
-    /**
-     * look if the room contain the exit
-     * @param exit the room to check if it exists
-     * @return true if the room exists
-     */
 	public boolean ContainsRoom(Room exit) {
 		if (exits.containsValue(exit)) {
 			return true;
@@ -127,18 +168,10 @@ public class Room
 		return false;
 	}
 
-    /**
-     * Add an actor to the room
-     * @param _actor Adds actor to the room
-     */
 	public void AddActor (Actor _actor) {
 		actors.put(_actor.name.toLowerCase(), _actor);
 	}
 	
-    /**
-     * Interact with the actor
-     * @param _name the actor to interact with
-     */
 	public void Interact(String _name) {
 		if (actors.containsKey(_name.toLowerCase())) {
 			Utils.DisplayText(actors.get(_name.toLowerCase()).line, 0.05f);
@@ -147,11 +180,6 @@ public class Room
 		}
 	}
 	
-    /**
-     * Get the actor with the given string
-     * @param _name the name of the actor
-     * @return the actor of it exists
-     */
 	public Actor GetActor(String _name) {
 		if (actors.containsKey(_name.toLowerCase())) {
 			return actors.get(_name.toLowerCase());
@@ -159,9 +187,6 @@ public class Room
 		return null;
 	}
 	
-    /**
-     * Print the actor of the room
-     */
 	public void LookActors() {
 		Utils.DisplayText("Actors: ", 0.05f);
 		
@@ -173,6 +198,11 @@ public class Room
 				 Utils.DisplayText(entry.getValue().name + " ", 0.05f);
 			}
 		}
+	}
+	
+	public boolean getLocked(String direction)
+	{
+		return lockedExits.get(direction).getLocked();
 	}
 	
 }
