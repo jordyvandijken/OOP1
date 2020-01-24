@@ -44,6 +44,11 @@ public class Actor {
 		return null;
 	}
 	
+	public boolean getDoneTrade()
+	{
+		return doneTrade;
+	}
+	
 	/**
      * Set up trading for the Actor, it requires an item for the trade and an item the player receives when the trade is done
      * @param Item the item the player needs to trade.
