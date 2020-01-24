@@ -24,12 +24,11 @@ public class CommandWords
         // nothing to do at the moment...
     }
 
+  
     /**
-     * Check whether a given String is a valid command word. 
-     * @return true if a given string is a valid command,
-     * false if it isn't.
+     * Shows all valid command words. 
+     * @return void,
      */
-    
     public void showAll()
     {
     	for (String command : validCommands) {
@@ -37,6 +36,12 @@ public class CommandWords
     	}
     	System.out.println();
     }
+    
+    /**
+     * Check whether a given String is a valid command word. 
+     * @return true if a given string is a valid command,
+     * false if it isn't.
+     */
     public boolean isCommand(String aString)
     {
         for(int i = 0; i < validCommands.length; i++) {

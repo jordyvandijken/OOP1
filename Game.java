@@ -7,7 +7,7 @@
  *  To play this game, create an instance of this class and call the "play"
  *  method.
  * 
- *  This main class creates and initialises all the others: it creates all
+ *  This main class creates and initializes all the others: it creates all
  *  rooms, creates the parser and starts the game.  It also evaluates and
  *  executes the commands that the parser returns.
  * 
@@ -29,7 +29,7 @@ public class Game
     Room lab, jungle, frontOfMansion, foyer, hallway, livingRoom, library, empty, entranceHall, office, kitchen, mazeEntrance, maze1, maze2, maze3, maze4, maze5, maze6, mazeEnd;
 
     /**
-     * Create the game and initialise its internal map.
+     * Create the game and initialize its internal map.
      */
     public Game() 
     {
@@ -49,7 +49,11 @@ public class Game
         lab = new Room("insde the lab");
 		Item test = new Item("Test", 1, "This is a Item to test the inventory");
 		lab.Inventory().AddItem(test);
-        
+		Item testkey = new Item("testkey", 5, "key to test doors");
+		lab.Inventory().AddItem(testkey);
+		
+		empty = new Room("in an empty room");
+		       
         Actor testActor = new Actor("Bob", "My name is Bob and I'm here to test this actor thing", "Thank you for the Test item Here is Test item 2"); 
         testActor.SetupTrading(test, new Item("Test2", 1, "This is an item to test actor trading"));
 
@@ -93,7 +97,10 @@ public class Game
         lab.AddActor(steve);
         
         // Initialize room exits
-        lab.setExit("up", jungle);
+        lab.setExit("north", jungle);
+        lab.setLockedExit("south", empty, true, testkey);
+        empty.setExit("north", lab);
+        
         jungle.setExit("north", frontOfMansion);
         jungle.setExit("south", lab);
         frontOfMansion.setExit("north", foyer);
@@ -101,7 +108,7 @@ public class Game
 
         foyer.setExit("north", entranceHall);
         foyer.setExit("east", hallway);
-        foyer.setExit("south", frontOfMansion);
+        foyer.setLockedExit("south", frontOfMansion, true, mansionKey);
         foyer.setExit("west", kitchen);
         
        
@@ -146,11 +153,7 @@ public class Game
         maze6.setExit("south", maze1);
         
         mazeEnd.setExit("up", kitchen);
-        
-       
-        
-        
-    
+         
 
         return lab;  // start game outside
     }
@@ -350,7 +353,9 @@ public class Game
 			Utils.DisplayText("Trade with who?", 0.05f);
 		}
     }
-    
+    /*
+     * Try to unlock door. If it fails, it shows why.
+     */
     private void unlockExit(Command command)
     {
     	if(!command.hasSecondWord())
@@ -372,11 +377,12 @@ public class Game
 	    	{
 	    		player.GetCurrentRoom().getActualExit(wantedExit).unlock();
 	    		Utils.DisplayText("Door unlocked", 0.05f);
+	    		
 	    	}
 	    	
 	    	
 	    	else {
-	    		Utils.DisplayText("You don't have the right key", 0.05f);
+	    		Utils.DisplayText("You don't have the right key. you need the " + requiredKey.GetName(), 0.05f);
 	    	}
     	}
     	

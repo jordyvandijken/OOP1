@@ -44,8 +44,8 @@ public class Room
     /**
      * Define the exits of this room.  Every direction either leads
      * to another room or is null (no exit there).
-     * @param The direction
-     * @param The room in that direction
+     * @param direction The direction
+     * @param neighbour The room in that direction
      */
     public void setExit(String direction, Room neighbor)
     {
@@ -69,11 +69,18 @@ public class Room
         return description;
     }
     
+    /**
+     * @return The long description of the room.
+     */
     public String getLongDescription()
     {
         return "You are " + description + ".\n" + getExitString() + getLockedExitString();
     }
     
+    /**
+     * Shows all the existing exits
+     * @return A list of all the exits in a string
+     */
     private String getExitString()
     {
         String returnString = "Exits: ";
@@ -86,6 +93,12 @@ public class Room
         return returnString;
         	
     }
+    
+    /**
+     * Get an exit of the room
+     * @param direction The direction
+     * @return return the room if exists else null
+     */
     
     private String getLockedExitString()
     {
