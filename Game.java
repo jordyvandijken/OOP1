@@ -70,8 +70,8 @@ public class Game
         // Add Items to the game
         
         Item coins = new Item("coins", 5, "Some coins");
-        Item mansionKey = new Item("Mansion Key", 2, "Key to open the front door of the mansion");
-        Item officeKey = new Item("Office Key", 2, "Key to open the office");
+        Item mansionKey = new Item("MansionKey", 2, "Key to open the front door of the mansion");
+        Item officeKey = new Item("OfficeKey", 2, "Key to open the office");
         Item painting = new Item("Painting", 50, "an oil painting. Due to its size, it's hard to carry");
         Item book = new Item("Book", 10, "An old book ");
         
@@ -110,7 +110,7 @@ public class Game
         
         livingRoom.setExit("north", library);
         livingRoom.setExit("west", hallway);
-        livingRoom.setExit("south", mazeEntrance);
+        livingRoom.setExit("down", mazeEntrance);
         library.setExit("south", livingRoom);
         
         grandHall.setLockedExit("north", office, true, officeKey);
