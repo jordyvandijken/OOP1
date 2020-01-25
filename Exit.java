@@ -1,4 +1,8 @@
-
+/**
+ * This is the Exit class
+ * It contains the direction of the exit and neighboring room
+ * 
+ */
 public class Exit
 {
 	private String direction;

@@ -69,7 +69,9 @@ public class Inventory {
 	public Item TakeItem(String str) {
 		return inv.remove(str);
 	}
-	
+	/*
+	 * Go through 
+	 */
 	public boolean Contains(Item item) {
 		boolean temp = false;
 		for(Map.Entry<String, Item> entry : inv.entrySet()) {
