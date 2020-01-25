@@ -91,7 +91,7 @@ public class Player {
         	{
         		Utils.DisplayText("This door is locked", 0.05f);
         		if(requiredKey == null) {
-        			Utils.DisplayText(" and can't be unlocked", 0.05f);
+        			Utils.DisplayText("and can't be unlocked", 0.05f);
         		}
         		else {
         			Utils.DisplayText("you need the " + requiredKey.GetName() + " to unlock it.", 0.05f);

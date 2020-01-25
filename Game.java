@@ -69,16 +69,18 @@ public class Game
         
         // Add Items to the game
         
-        Item coins = new Item("coins", 5, "Some coins");
+        Item coins = new Item("coins", 5, "Some gold coins");
         Item mansionKey = new Item("MansionKey", 2, "Key to open the front door of the mansion");
         Item officeKey = new Item("OfficeKey", 2, "Key to open the office");
-        Item painting = new Item("Painting", 50, "an oil painting. Due to its size, it's hard to carry");
-        Item book = new Item("Book", 10, "An old book ");
+        Item painting = new Item("Painting", 4, "an oil painting.");
+        Item book = new Item("Book", 2, "An old book ");
+        Item rug = new Item("Rug", 4, "A large rug");
         
                  
         
         kitchen.Inventory().AddItem(officeKey);
         livingRoom.Inventory().AddItem(coins);
+        hallway.Inventory().AddItem(rug);
         office.Inventory().AddItem(painting);
         office.Inventory().AddItem(book);
         maze4.Inventory().AddItem(mansionKey);
@@ -86,11 +88,16 @@ public class Game
         
         // Add Actors to the game
         
-        Actor steve = new Actor("Steve", "Hi, I'm Steve, your coworker. I have been looking for an old and valuable book that appears to be located in a jungle mansion. \n"
+        Actor steve = new Actor("Steve", "Hi, I'm Steve, your coworker. I have been looking for an old and valuable book that appears to be located in a vacant mansion. \n"
         		+ "Please, go on and find it.", "Congratulations! You finished the game. You can continue to wander around or enter quit to exit"); 
         
-        steve.SetupTrading(book, new Item("finalItem", 1, "finalItem"));
+        steve.SetupTrading(book, new Item("cheque", 1, "cheque"));
         lab.AddActor(steve);
+        
+        Actor philip = new Actor("Philip", "I'm Philip. I have a necklace that I'm willing to trade for some coins", "Thank you for the coins. Here is the necklace");
+        philip.SetupTrading(coins, new Item("necklace", 8, "The necklace you got from trading with Philip"));
+        library.AddActor(philip);
+        
         
         
         // Initialize room exits
@@ -116,6 +123,7 @@ public class Game
         grandHall.setLockedExit("north", office, true, officeKey);
         grandHall.setExit("south", foyer);
         kitchen.setExit("east", foyer);
+        kitchen.setLockedExit("down", mazeEnd, true, null);
         office.setExit("south", grandHall);
         
         mazeEntrance.setExit("west", maze2);
@@ -361,7 +369,7 @@ public class Game
     	
     	if(requiredKey == null)
     	{
-    		Utils.DisplayText("This door can't be unlocked", 0.05f);
+    		Utils.DisplayText("This door can't be unlocked from this side", 0.05f);
     	}
     	else {
     	
